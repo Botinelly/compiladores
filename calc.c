@@ -1,21 +1,11 @@
-/* This program converts infix expression to postfix expression.
- * This program assume that there are Five operators: (*, /, +, -,^) 
-	in infix expression and operands can be of single-digit only.
- * This program will not work for fractional numbers.
- * Further this program does not check whether infix expression is 
- valid or not in terms of number of operators and operands.*/
-
 #include<stdio.h>
-#include<stdlib.h>      /* for exit() */
-#include<ctype.h>     /* for isdigit(char ) */
+#include<ctype.h>
 #include<string.h>
 
 #define SIZE 100
 
 char stack[SIZE];
 int top = -1;
-
-/* define push operation */
 
 void push(char item)
 {
@@ -45,7 +35,7 @@ int is_operator(char symbol)
 
 int precedence(char symbol)
 {
-	if(symbol == '^')/* exponent operator, highest precedence*/
+	if(symbol == '^')
 	{
 		return(3);
 	}
@@ -53,7 +43,7 @@ int precedence(char symbol)
 	{
 		return(2);
 	}
-	else if(symbol == '+' || symbol == '-')          /* lowest precedence */
+	else if(symbol == '+' || symbol == '-')
 	{
 		return(1);
 	}
@@ -69,14 +59,14 @@ void InfixToPostfix(char infix_exp[], char postfix_exp[])
 	char item;
 	char x;
 
-	push('(');                               /* push '(' onto stack */
-	strcat(infix_exp,")");                  /* add ')' to infix expression */
+	push('(');                             
+	strcat(infix_exp,")");                 
 
 	i=0;
 	j=0;
-	item=infix_exp[i];         /* initialize before loop*/
+	item=infix_exp[i];
 
-	while(item != '\0')        /* run loop till end of infix expression */
+	while(item != '\0')
 	{
 		if(item == '(')
 		{
@@ -84,10 +74,10 @@ void InfixToPostfix(char infix_exp[], char postfix_exp[])
 		}
 		else if( isdigit(item) || isalpha(item))
 		{
-			postfix_exp[j] = item;              /* add operand symbol to postfix expr */
+			postfix_exp[j] = item;
 			j++;
 		}
-		else if(is_operator(item) == 1)        /* means symbol is operator */
+		else if(is_operator(item) == 1)
 		{
 			x=pop();
 			while(is_operator(x) == 1 && precedence(x)>= precedence(item))
@@ -114,7 +104,6 @@ void InfixToPostfix(char infix_exp[], char postfix_exp[])
 		{ 
 			printf("\nInvalid infix Expression.\n");
 			getchar();
-			exit(1);
 		}
 		i++;
 
@@ -167,7 +156,6 @@ int main(int argc, char *argv[])
     {
         while(fgets(input, sizeof(input), stdin) != NULL)
         {
-            // removes the \n from the entry
             input[strlen(input) - 1] = 0;
             InfixToPostfix(input, postf);
             printf("%s=%d\n", input, calculator(postf));
