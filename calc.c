@@ -1,34 +1,130 @@
-#include <stdio.h>
-#include <ctype.h>
-#include <string.h>
+/* This program converts infix expression to postfix expression.
+ * This program assume that there are Five operators: (*, /, +, -,^) 
+	in infix expression and operands can be of single-digit only.
+ * This program will not work for fractional numbers.
+ * Further this program does not check whether infix expression is 
+ valid or not in terms of number of operators and operands.*/
 
-// main stack
-char stack[256];
+#include<stdio.h>
+#include<stdlib.h>      /* for exit() */
+#include<ctype.h>     /* for isdigit(char ) */
+#include<string.h>
+
+#define SIZE 100
+
+char stack[SIZE];
 int top = -1;
 
-// push a element to stack
-void push(char i){
-    stack[++top] = i;
-}
+/* define push operation */
 
-// treats the operators and marker to the end of postfix
-int symbol(char element)
+void push(char item)
 {
-    switch(element){
-        case '#':
-            return 0;
-        case '(':
-            return 1;
-        case '+':
-        case '-':
-            return 2;
-        case '*':
-        case '/':
-            return 3;
-    }
+    top = top+1;
+    stack[top] = item;
 }
 
-// calculates the expression in postfixed mode
+char pop()
+{
+	char item ;
+	item = stack[top];
+	top = top-1;
+	return(item);
+}
+
+int is_operator(char symbol)
+{
+	if(symbol == '^' || symbol == '*' || symbol == '/' || symbol == '+' || symbol =='-')
+	{
+		return 1;
+	}
+	else
+	{
+	    return 0;
+	}
+}
+
+int precedence(char symbol)
+{
+	if(symbol == '^')/* exponent operator, highest precedence*/
+	{
+		return(3);
+	}
+	else if(symbol == '*' || symbol == '/')
+	{
+		return(2);
+	}
+	else if(symbol == '+' || symbol == '-')          /* lowest precedence */
+	{
+		return(1);
+	}
+	else
+	{
+		return(0);
+	}
+}
+
+void InfixToPostfix(char infix_exp[], char postfix_exp[])
+{ 
+	int i, j;
+	char item;
+	char x;
+
+	push('(');                               /* push '(' onto stack */
+	strcat(infix_exp,")");                  /* add ')' to infix expression */
+
+	i=0;
+	j=0;
+	item=infix_exp[i];         /* initialize before loop*/
+
+	while(item != '\0')        /* run loop till end of infix expression */
+	{
+		if(item == '(')
+		{
+			push(item);
+		}
+		else if( isdigit(item) || isalpha(item))
+		{
+			postfix_exp[j] = item;              /* add operand symbol to postfix expr */
+			j++;
+		}
+		else if(is_operator(item) == 1)        /* means symbol is operator */
+		{
+			x=pop();
+			while(is_operator(x) == 1 && precedence(x)>= precedence(item))
+			{
+				postfix_exp[j] = x;
+				j++;
+				x = pop();
+			}
+			push(x);
+
+			push(item);
+		}
+		else if(item == ')')
+		{
+			x = pop();
+			while(x != '(')
+			{
+				postfix_exp[j] = x;
+				j++;
+				x = pop();
+			}
+		}
+		else
+		{ 
+			printf("\nInvalid infix Expression.\n");
+			getchar();
+			exit(1);
+		}
+		i++;
+
+
+		item = infix_exp[i];
+	}
+	postfix_exp[j] = '\0';
+	
+}
+
 int calculator(char *postfix)
 {
     char ch;
@@ -63,68 +159,25 @@ int calculator(char *postfix)
     return stack[top];
 }
 
-// converts infixed expressions to postfixed
-void to_RPN(char *infix, char *postfix)
-{
-    char ch, element;
-    int i = 0, k = 0;
-    
-    // marker
-    push('#');
 
-    while((ch = infix[i++]) != '\0')
-    {
-        if(ch == '(')
-        {
-            push(ch);
-        }
-        else if (isalnum(ch))
-        {
-            postfix[k++] = ch;
-        }
-        else if (ch == ')')
-        {
-            while(stack[top] != '(')
-            {
-                postfix[k++] = stack[top--];
-            }
-            element = stack[top--];
-        } else 
-        {
-            while(symbol(stack[top]) >= symbol(ch))
-            {
-                postfix[k++] = stack[top--];
-            }
-            push(ch);
-        }
-    }
-    // while not at end of expression
-    while (stack[top] != '#')
-    {
-        postfix[k++] = stack[top--];
-    }
-    postfix[k] = 0;
-}
-
-
-int main(int argc, char** argv)
+int main(int argc, char *argv[])
 {
     char input[80], postf[80];
-
     if(argc == 1)
     {
         while(fgets(input, sizeof(input), stdin) != NULL)
         {
             // removes the \n from the entry
             input[strlen(input) - 1] = 0;
-            to_RPN(input, postf);
+            InfixToPostfix(input, postf);
             printf("%s=%d\n", input, calculator(postf));
         }
     }
     else
     {
         strcpy(input, argv[1]);
-        to_RPN(input, postf);
+        InfixToPostfix(input, postf);
         printf("%s=%d\n", input, calculator(postf));
     }
+	return 0;
 }
