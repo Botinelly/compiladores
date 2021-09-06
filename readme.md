@@ -8,6 +8,7 @@ calculator 3+3
 
 calculator (3+3)*3
 
+calculator < expressoes.txt
 
 References:
 
