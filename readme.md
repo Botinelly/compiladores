@@ -19,3 +19,5 @@ https://pt.stackoverflow.com/questions/295505/convers%C3%A3o-infixa-para-p%C3%B3
 http://linguagemc.com.br/a-biblioteca-string-h/
 
 https://www.ime.usp.br/~pf/mac0122-2003/aulas/rpn-calculator.html
+
+https://www.geeksforgeeks.org/stack-set-4-evaluation-postfix-expression/
