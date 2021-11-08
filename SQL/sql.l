@@ -1,7 +1,3 @@
-/*
-	SQL v.1 - Lê de arquivos ou linha de comando
-	Willians Oliveira
-*/
 %option caseless
 %{
 #define YYSTYPE double
