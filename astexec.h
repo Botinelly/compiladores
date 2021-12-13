@@ -86,13 +86,6 @@ static void dispatchStatement(hashtable *htable, AstElement* node)
         }
         break;
 
-    case 'L':
-
-        while (evalExpression(htable, node->cond) == 1)
-        {
-            execStmt(htable, node->right);
-        }  
-
     break;    
 
     case 'D':

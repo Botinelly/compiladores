@@ -17,7 +17,7 @@ if(a == 0){
     int delta
     delta = (b*b) - (4*a*c)
     int rdelta 
-    rdelta = ^delta 
+    rdelta = ^delta
     
     if(delta < 0){
         print("Nao possui raizes")

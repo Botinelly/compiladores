@@ -1,0 +1,17 @@
+int n 
+int uni
+int dez
+int cent
+
+print("Digite um numero inteiro positivo:")
+read(n)
+
+uni = n % 10
+n = (n - uni)/10
+dez = n % 10
+n = (n - dez)/10
+cent = n
+
+print(cent)
+print(dez)
+print(uni)

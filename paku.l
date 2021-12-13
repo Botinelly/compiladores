@@ -10,7 +10,6 @@ void yyerror(char *s);
 %%
 "if"										{ return IF;}
 "else"                              		{ return ELSE;}
-"while"                             		{ return WHILE;}
 "{"                                 		{ return O_KEY;}
 "}"                                 		{ return C_KEY;}
 "="                                			{ return EQUALS;}
