@@ -1,70 +1,55 @@
-PROGRAM
-    : STATEMENT END{YYACCEPT;}
+program: 
+    statements
     ;
 
-CONDOPERATOR:
-    | GREATER_THEN_EQUAL
-    | LESS_THEN_EQUAL
-    | EQUAL_THEN_EQUAL
-    | NOT_EQUAL
-    | LESS_THEN
-    | GREATER_THEN
-
-BLOCK:
-    O_KEY STATEMENT C_KEY
+block: 
+    O_KEY EOL statements C_KEY
     ;
 
-STATEMENT 
-    : LINE
-    | STATEMENT STATEMENT
+statements: 
+    | statements statement
     ;
 
-LINE 
-    :ATTRIBUTION
-    | FUNCTION
-    | DECLARATION
+statement:
+    declaration
+    | attribution
+    | if_stmt
+    | whileStmt
+    | read_stmt
+    | print_stmt
+    | block
     | EOL
     ;
 
-ATTRIBUTION
-    : IDENTIFIER EQUALS CALC EOL
-    | IDENTIFIER EQUALS IDENTIFIER_CALC EOL
+if_stmt: 
+    IF P_LEFT expression P_RIGHT block EOL
+    | IF P_LEFT expression P_RIGHT block ELSE block EOL
     ;
 
-IDENTIFIER_CALC
-    : IDENTIFIER PLUS IDENTIFIER
-    | IDENTIFIER MINUS IDENTIFIER
-    | IDENTIFIER DIVIDE IDENTIFIER
-    | IDENTIFIER TIMES IDENTIFIER
+whileStmt: 
+    WHILE P_LEFT expression P_RIGHT block EOL
     ;
 
-CALC
-    : NUMBER
-    | CALC '+' CALC
-    | CALC '-' CALC
-    | CALC '/' CALC
-    | CALC '*' CALC
-    | '(' CALC ')'
+attribution: 
+    IDENTIFIER EQUALS expression EOL 
     ;
 
-FUNCTION
-    : IDENTIFIER '(' IDENTIFIER ')' EOL
+expression:
+    NUMBER 
+    | IDENTIFIER 
+    | expression OPERATOR expression 
+    | P_LEFT expression P_RIGHT 
+    | NOT expression 
     ;
 
-DECLARATION
-    : TYPE IDENTIFIER EOL
+print_stmt:
+    PRINT P_LEFT IDENTIFIER P_RIGHT EOL 
+    | PRINT P_LEFT STRING P_RIGHT EOL 
+    ;
+read_stmt:
+    READ P_LEFT IDENTIFIER P_RIGHT EOL 
     ;
 
-TYPE
-    : int
-    | float
-    ;
-
-IDENTIFIER
-    : [a-zA-Z_][_a-zA-Z0-9]*
-    ;
-
-NUMBER
-    : [0-9]+(\.[0-9]+)?
-    |[0-9]+
+declaration:
+    TYPE IDENTIFIER EOL 
     ;

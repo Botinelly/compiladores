@@ -1,0 +1,39 @@
+print("Ex: ax^2 + bx + c")
+int a
+int r1
+int r2
+read(a)
+
+if(a == 0){
+    print("equacao invalida")
+}else{
+
+    int b
+    read(b)
+
+    int c
+    read(c)
+
+    int delta
+    delta = (b*b) - (4*a*c)
+    int rdelta 
+    rdelta = ^delta 
+    
+    if(delta < 0){
+        print("Nao possui raizes")
+    }else{
+        if(delta == 0){            
+            print("Possui apenas uma raiz")
+            r1 = ((-b) + rdelta) / (2*a)
+            print(r1)
+            
+        }else{
+            print("Possui duas raizes")
+            r1 = ((-b) + rdelta) / (2*a)
+            r2 = ((-b) - rdelta) / (2*a)
+            print(r1)
+            print(r2)
+        }
+    }
+}
+

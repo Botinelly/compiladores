@@ -1,3 +1,6 @@
+#ifndef HASHLIST_H
+#define HASHLIST_H
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -134,3 +137,5 @@ void printlist(list *toprint)
 	    iternode = iternode->next;
     }
 }
+
+#endif
